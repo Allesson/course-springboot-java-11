@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -19,7 +21,7 @@ import br.com.allesson.course.entities.User;
 import br.com.allesson.course.services.UserService;
 
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping("/users")
 public class UserResource {
 	
 	@Autowired
@@ -32,9 +34,11 @@ public class UserResource {
 		
 	}
 	
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id){
+	@GetMapping(value = "/{id}", params = "chave", headers = "nome")
+	public ResponseEntity<User> findById(@PathVariable Long id, @RequestHeader String nome, @RequestParam String chave){
+		
 		User obj = service.findById(id);
+		System.out.println("Nome: " + nome + " Chave: " + chave);
 		return ResponseEntity.ok().body(obj);
 	}
 	
